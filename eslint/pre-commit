@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "Checking for eslint violations"
+
+file_list=`git diff --name-only --diff-filter=ACMR HEAD | grep "\.js\$" | xargs`
+eslintcmd="core/node_modules/.bin/eslint --max-warnings 1"
+
+$eslintcmd $file_list
+rc=$?
+
+if [ "$rc" -ne 0 ]; then
+    echo "Violations found. Fixing..."
+
+    $eslintcmd --fix $file_list
+
+    echo "Aborting commit so fixes can be verified."
+    exit 1
+else
+    echo "No violations :)"
+    exit 0
+fi
