@@ -1,9 +1,17 @@
 #!/bin/bash
 
+#
+# Modify this to be the path to your node modules
+#
+node_modules="core/node_modules"
+#
+#
+#
+
 echo "Checking for eslint violations"
 
 file_list=`git diff --name-only --diff-filter=ACMR HEAD | grep "\.js\$" | xargs`
-eslintcmd="core/node_modules/.bin/eslint --max-warnings 1"
+eslintcmd="$node_modules/.bin/eslint --max-warnings 1"
 
 $eslintcmd $file_list
 rc=$?
